@@ -5,12 +5,13 @@ import sys
 home_dir = os.environ["HOME"]
 data_dir = f"{home_dir}/CS3800-Coursework/Datasets"
 script_dir = f"{home_dir}/CS3800-Coursework/hive"
+hdfs_output_dir = '/user/BX/output'
 
 def main():
 	routine = {}
 	routine["setup"] = setup
 	routine["most-rated-books"] = most_rated_books
-	routine["x"] = x
+	routine["rating-summary"] = rating_summary
 	if sys.argv[1] in routine:	
 		routine[sys.argv[1]]()
 	else:
@@ -34,9 +35,10 @@ def setup():
 def most_rated_books():
 	run_hive_file(f"{script_dir}/MostReviewedBooks.hql")
 
-def x():
+def rating_summary():
 	hive_script_arg = f"HIVE_SCRIPT_DIR={script_dir}"
-	run_hive_file(f"{script_dir}/X.hql", hive_script_arg)
+	hdfs_output_dir_arg = f"HDFS_OUTPUT_DIR={hdfs_output_dir}"
+	run_hive_file(f"{script_dir}/BookRatingSummary.hql", hive_script_arg, hdfs_output_dir_arg)
 
 if __name__ == '__main__':
 	main()

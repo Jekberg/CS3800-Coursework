@@ -1,17 +1,18 @@
 USE CS3800;
 
-DROP TABLE IF EXISTS BookRatingSummary;
-CREATE TABLE IF NOT EXISTS BookRatingSummary (
+CREATE EXTERNAL TABLE IF NOT EXISTS BookRatingSummary (
 	isbn string,
 	ratingCount int,
 	minRating int,
 	maxRating int,
 	avgRating float,
-	stDev float);
+	stDev float)
+ROW FORMAT DELIMITED
+FIELDS TERMINATED BY ','
+STORED AS TEXTFILE
+LOCATION ${HDFS_OUTPUT_DIR};
 
-TRUNCATE TABLE BookRatingSummary;
-
-INSERT INTO BookRatingSummary
+INSERT OVERWRITE TABLE BookRatingSummary
 SELECT
 	Summary.isbn,
 	Summary.ratingCount,
