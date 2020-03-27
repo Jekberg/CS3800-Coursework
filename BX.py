@@ -11,7 +11,8 @@ def main():
 	routine = {}
 	routine["setup"] = setup
 	routine["most-rated-books"] = most_rated_books
-	routine["rating-summary"] = rating_summary
+	routine["top-100-books"] = top_100_books
+	routine["abc"] = abc
 	if sys.argv[1] in routine:	
 		routine[sys.argv[1]]()
 	else:
@@ -36,9 +37,19 @@ def most_rated_books():
 	run_hive_file(f"{script_dir}/MostReviewedBooks.hql")
 
 def rating_summary():
+	subprocess.run(['hdfs', 'dfs', '-mkdir', '-p', hdfs_output_dir])
 	hive_script_arg = f"HIVE_SCRIPT_DIR={script_dir}"
 	hdfs_output_dir_arg = f"HDFS_OUTPUT_DIR={hdfs_output_dir}"
 	run_hive_file(f"{script_dir}/BookRatingSummary.hql", hive_script_arg, hdfs_output_dir_arg)
+
+def abc():
+	run_hive_file(f"{script_dir}/UserBookRecomendations.hql")
+
+def top_100_books():
+	subprocess.run(['hdfs', 'dfs', '-mkdir', '-p', hdfs_output_dir])
+	hive_script_arg = f"HIVE_SCRIPT_DIR={script_dir}"
+	hdfs_output_dir_arg = f"HDFS_OUTPUT_DIR={hdfs_output_dir}"
+	run_hive_file(f"{script_dir}/Top100Books.hql", hive_script_arg, hdfs_output_dir_arg)
 
 if __name__ == '__main__':
 	main()
