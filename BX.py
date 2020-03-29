@@ -10,9 +10,11 @@ hdfs_output_dir = '/user/BX/output'
 def main():
 	routine = {}
 	routine["setup"] = setup
-	routine["most-rated-books"] = most_rated_books
+	routine["ratings-by-age-group"] = abc
 	routine["top-100-books"] = top_100_books
 	routine["abc"] = abc
+	routine["a"] = a
+	routine["book-recomendations-for-age"] = book_recomendations_for_age
 	if sys.argv[1] in routine:	
 		routine[sys.argv[1]]()
 	else:
@@ -44,6 +46,13 @@ def rating_summary():
 
 def abc():
 	run_hive_file(f"{script_dir}/UserBookRecomendations.hql")
+
+def a():
+	run_hive_file(f"{script_dir}/AuthorDemographic.hql")
+
+def book_recomendations_for_age():
+	age = int(sys.argv[2])
+	run_hive_file(f"{script_dir}/BookRecomendationsByAge.hql", f"AGE={age}")
 
 def top_100_books():
 	subprocess.run(['hdfs', 'dfs', '-mkdir', '-p', hdfs_output_dir])
