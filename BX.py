@@ -10,11 +10,11 @@ hdfs_output_dir = '/user/BX/output'
 def main():
 	routine = {}
 	routine["setup"] = setup
-	routine["ratings-by-age-group"] = abc
 	routine["top-100-books"] = top_100_books
-	routine["abc"] = abc
-	routine["a"] = a
+	routine["top-100-trending-books"] = top_100_trending_books
+	routine["recomend-books-for-user"] = recomend_books_for_user
 	routine["book-recomendations-for-age"] = book_recomendations_for_age
+	routine["books-also-rated-with"] = book_also_rated_with
 	if sys.argv[1] in routine:	
 		routine[sys.argv[1]]()
 	else:
@@ -35,30 +35,35 @@ def setup():
 	datasetpath = f"DATASET_PATH={data_dir}"
 	run_hive_file(f"{script_dir}/Setup.hql", datasetpath)
 
-def most_rated_books():
-	run_hive_file(f"{script_dir}/MostReviewedBooks.hql")
+def top_100_books():
+	run_hive_file(f"{script_dir}/Top100Books.hql")
 
-def rating_summary():
-	subprocess.run(['hdfs', 'dfs', '-mkdir', '-p', hdfs_output_dir])
-	hive_script_arg = f"HIVE_SCRIPT_DIR={script_dir}"
-	hdfs_output_dir_arg = f"HDFS_OUTPUT_DIR={hdfs_output_dir}"
-	run_hive_file(f"{script_dir}/BookRatingSummary.hql", hive_script_arg, hdfs_output_dir_arg)
+def top_100_trending_books():
+	run_hive_file(f"{script_dir}/Top100TrendingBooks.hql")
 
-def abc():
-	run_hive_file(f"{script_dir}/UserBookRecomendations.hql")
-
-def a():
-	run_hive_file(f"{script_dir}/AuthorDemographic.hql")
+def recomend_books_for_user():
+	if len(sys.argv) < 3:
+		print('User ID needed!')
+		print('Please provide a user ID number.')
+		return
+	id = int(sys.argv[2])
+	run_hive_file(f"{script_dir}/RecomendBooksForUser.hql", f"USER_ID={id}")
 
 def book_recomendations_for_age():
+	if len(sys.argv) < 3:
+		print('Age needed!')
+		print('Please provide a age number.')
+		return
 	age = int(sys.argv[2])
 	run_hive_file(f"{script_dir}/BookRecomendationsByAge.hql", f"AGE={age}")
 
-def top_100_books():
-	subprocess.run(['hdfs', 'dfs', '-mkdir', '-p', hdfs_output_dir])
-	hive_script_arg = f"HIVE_SCRIPT_DIR={script_dir}"
-	hdfs_output_dir_arg = f"HDFS_OUTPUT_DIR={hdfs_output_dir}"
-	run_hive_file(f"{script_dir}/Top100Books.hql", hive_script_arg, hdfs_output_dir_arg)
+def book_also_rated_with():
+	if len(sys.argv) < 3:
+		print('Book ISBN needed!')
+		print('Please provide a book ISBN.')
+		return
+	isbn = sys.argv[2]
+	run_hive_file(f"{script_dir}/BookAlsoRatedWithBook.hql", f"ISBN={isbn}")
 
 if __name__ == '__main__':
 	main()

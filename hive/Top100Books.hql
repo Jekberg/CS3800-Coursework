@@ -1,19 +1,7 @@
 USE CS3800;
 
 SET hive.auto.convert.join = false;
-
-CREATE EXTERNAL TABLE IF NOT EXISTS Top100Books (
-	rated float,
-	reviews int,
-	title string,
-	author string,
-	publisher string,
-	isbn string)
-COMMENT ''
-ROW FORMAT DELIMITED
-FIELDS TERMINATED BY '\073'
-STORED AS TEXTFILE
-LOCATION '${HDFS_OUTPUT_DIR}/Top100Books';
+SET hive.cli.print.header = true;
 
 WITH BookRankings AS (
 	SELECT
@@ -35,10 +23,7 @@ WITH BookRankings AS (
 		relevence DESC,
 		avgRating DESC
 	LIMIT 100)
-INSERT OVERWRITE TABLE Top100Books
 SELECT
-	avgRating,
-	ratingCount,
 	title,
 	author,	
 	publisher,
