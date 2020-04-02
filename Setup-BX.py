@@ -34,6 +34,10 @@ CREATE TABLE Users(
 	id int,
 	location string,
 	age int)
+COMMENT 'The BX users'
+CLUSTERED BY (id)
+SORTED BY (id ASC)
+INTO 64 BUCKETS
 ROW FORMAT DELIMITED
 FIELDS TERMINATED BY '\\073'
 STORED AS textfile;
@@ -48,15 +52,23 @@ CREATE TABLE IF NOT EXISTS Books (
 	smallImageUrl string,
 	mediumImageUrl string,
 	largeImageUrl string)
+COMMENT 'The BX books'
+CLUSTERED BY (isbn)
+SORTED BY (isbn ASC)
+INTO 64 BUCKETS
 ROW FORMAT DELIMITED
 FIELDS TERMINATED BY '\\073'
 STORED AS textfile;
 
 DROP TABLE IF EXISTS Ratings;
-CREATE TABLE IF NOT EXISTS Ratings(
+CREATE TABLE IF NOT EXISTS Ratings (
 	userId int,
 	isbn string,
 	rating int)
+COMMENT 'The BX book-ratings'
+CLUSTERED BY (userId, isbn)
+SORTED BY (userId ASC, isbn ASC)
+INTO 64 BUCKETS
 ROW FORMAT DELIMITED
 FIELDS TERMINATED BY '\\073'
 STORED AS textfile;
