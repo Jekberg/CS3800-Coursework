@@ -9,9 +9,7 @@ hdfs_output_dir = '/user/BX/output'
 
 def main():
 	routine = {}
-	routine["setup"] = setup
 	routine["top-100-books"] = top_100_books
-	routine["top-100-trending-books"] = top_100_trending_books
 	routine["recomend-books-for-user"] = recomend_books_for_user
 	routine["book-recomendations-for-age"] = book_recomendations_for_age
 	routine["books-also-rated-with"] = book_also_rated_with
@@ -31,15 +29,8 @@ def run_hive_file(file, *args):
 	result.check_returncode()
 	return result.stdout
 
-def setup():
-	datasetpath = f"DATASET_PATH={data_dir}"
-	run_hive_file(f"{script_dir}/Setup.hql", datasetpath)
-
 def top_100_books():
 	run_hive_file(f"{script_dir}/Top100Books.hql")
-
-def top_100_trending_books():
-	run_hive_file(f"{script_dir}/Top100TrendingBooks.hql")
 
 def recomend_books_for_user():
 	if len(sys.argv) < 3:
