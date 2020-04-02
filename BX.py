@@ -13,6 +13,7 @@ def main():
 	routine["recomend-books-for-user"] = recomend_books_for_user
 	routine["book-recomendations-for-age"] = book_recomendations_for_age
 	routine["books-also-rated-with"] = book_also_rated_with
+	routine["popular-authors"] = popular_authors
 	if sys.argv[1] in routine:	
 		routine[sys.argv[1]]()
 	else:
@@ -39,6 +40,12 @@ def recomend_books_for_user():
 		return
 	id = int(sys.argv[2])
 	run_hive_file(f"{script_dir}/RecomendBooksForUser.hql", f"USER_ID={id}")
+
+def popular_authors():
+	subprocess.run(['hdfs', 'dfs', '-mkdir', '-p', hdfs_output_dir])
+	hive_script_arg = f"HIVE_SCRIPT_DIR={script_dir}"
+	hdfs_output_dir_arg = f"HDFS_OUTPUT_DIR={hdfs_output_dir}"
+	run_hive_file(f"{script_dir}/popularAuthors.hql", hive_script_arg, hdfs_output_dir_arg)
 
 def book_recomendations_for_age():
 	if len(sys.argv) < 3:
