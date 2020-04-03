@@ -2,8 +2,8 @@ import os
 import subprocess
 import sys
 
-home_dir = os.environ["HOME"]
-script_dir = f"{home_dir}/CS3800-Coursework/hive"
+current_path = os.getcwd()
+script_dir = f"{current_path}/hive"
 
 def main():
 	routine = {}
@@ -12,13 +12,20 @@ def main():
 	routine["recomend-books-for-user"] = recomend_books_for_user
 	routine["book-recomendations-for-age"] = book_recomendations_for_age
 	routine["books-also-rated-with"] = book_also_rated_with
+	
+
+	if len(sys.argv) < 2:
+		print("Please specify a command.")
+		print("For help, type: python3", sys.argv[0], 'help')
+		return
 	if sys.argv[1] in routine:	
 		routine[sys.argv[1]]()
 	else:
-		print("Invalid command: ", sys.argv[1])
+		if sys.argv[1] != "help":
+			print("Invalid command: ", sys.argv[1])
 		print("These are the valid commands")
 		for command in routine.keys():
-			print(command)
+			print(' *', command)
 
 def run_hive_file(file, *args):
 	hive_dir = os.environ["HIVE_HOME"]
