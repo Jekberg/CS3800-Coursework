@@ -1,5 +1,6 @@
 # CS3800-Coursework
 ## Prerequesits
+- Java 8
 - Hadoop 2.7.3
 - Hive 2.1.1
 - Python 3.6
