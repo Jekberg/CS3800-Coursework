@@ -5,6 +5,9 @@
 - Hive 2.1.1
 - Python 3.6
 
+## Before Using the Applcation
+Before the application is used, the first action to be taken is to navigate into the directory of the project  by running ```cd CS3800-Coursework``` in the parent directory. This is because the root directory of the application is used for finding the appropriate subfolders. Also ensure that *HIVE_HOME* is an  environmental variable set to point tot the root hive directory.
+
 ## Start The Application
 The application is started by starting HDFS and YARN using the command ```bash Start.sh``` in the CS3800-Coursework directory. Then the BX dataset can be loaded into the application by executing ```python3 Setup-BX.py```, which will create the database if it does not exist.
 
