@@ -1,7 +1,4 @@
 # CS3800-Coursework
-Scripts related to the CS3800 coursework
-
-
 ## Prerequesits
 - Hadoop 2.7.3
 - Hive 2.1.1
@@ -14,3 +11,6 @@ The application is started by starting HDFS and YARN using the command ```bash S
 Stop the application by issuing the command ```bash Stop.sh``` in the CS3800-Coursework directory. To delete the database, run the command ```python3 Teardown-BX.py``` **BEFORE** stopping the HDFS and YARN.
 
 ## Using the Application
+The *BX.py* file is the script which functions as the command line interface of the application. The script contains a number of services which can be invoked to generate reports using the BX dataset. An example of how to get the top 100 books with the overall best ratings can be obtained by typing ```python3 BX.py top-100-books```, which run a hive query ad output the results in the terminal.
+
+For a list of the available commands, type ```python3 BX.py help```; however, be aware that some sscripts require additional arguments to be provides, such as the *books-also-rated-with* command, which require an ISBN as an extra argument. The commands which depend on additional arguments will alert the user that an extra argument is needed if invoked without the oppropriate number of arguments.
